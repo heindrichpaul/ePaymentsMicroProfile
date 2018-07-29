@@ -1,19 +1,8 @@
 package it.com.paul.rest;
 
-import org.apache.cxf.jaxrs.provider.jsrjsonp.JsrJsonpProvider;
-import org.junit.Test;
-
-import javax.json.JsonObject;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Response;
-
-import static org.junit.Assert.assertEquals;
-
 public class EndpointTest {
 
-    @Test
+ /*   @Test
     public void testGetProperties() {
         String port = System.getProperty("liberty.test.port");
         String war = System.getProperty("war.name");
@@ -35,4 +24,5 @@ public class EndpointTest {
                 obj.getString("os.name"));
         response.close();
     }
+    */
 }
