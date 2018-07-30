@@ -1,20 +1,23 @@
 package com.paul.resources;
 
 
+import javax.json.bind.annotation.JsonbCreator;
+import javax.json.bind.annotation.JsonbProperty;
 import java.time.LocalDateTime;
 
-class Transaction {
-    private final float amount;
+public class Transaction {
+    private final double amount;
     private final String transactionType;
     private final LocalDateTime transactionDate;
 
-    public Transaction(float amount, String transactionType) {
+    @JsonbCreator
+    Transaction(@JsonbProperty("transactionAmount") double amount,@JsonbProperty("transactionType") String transactionType) {
         this.amount = amount;
         this.transactionType = transactionType;
         this.transactionDate = LocalDateTime.now();
     }
 
-    public float getAmount() {
+    public double getAmount() {
         return amount;
     }
 

@@ -17,11 +17,11 @@ public class AccountTest {
 
     @Test
     public void testNormalTransfer() {
-        float accountABalance = a.getBalance();
-        float accountBBalance = b.getBalance();
-        float amountToTransfer = 43;
-        float expectedAmountInAccountA = accountABalance - amountToTransfer;
-        float expectedAmountInAccountB = accountBBalance + amountToTransfer;
+        double accountABalance = a.getBalance();
+        double accountBBalance = b.getBalance();
+        double amountToTransfer = 43;
+        double expectedAmountInAccountA = accountABalance - amountToTransfer;
+        double expectedAmountInAccountB = accountBBalance + amountToTransfer;
         boolean result = a.transferAmountToAccount(amountToTransfer, b);
         assertTrue("The transfer from account A to account B should have succeeded.", result);
         assertEquals("The correct amount of funds were not transferred from account A.", expectedAmountInAccountA, a.getBalance(), 0);
@@ -30,9 +30,9 @@ public class AccountTest {
 
     @Test
     public void testMoreThanAvailableFundsTransfer() {
-        float accountABalance = a.getBalance();
-        float accountBBalance = b.getBalance();
-        float amountToTransfer = accountABalance + 1;
+        double accountABalance = a.getBalance();
+        double accountBBalance = b.getBalance();
+        double amountToTransfer = accountABalance + 1;
 
         boolean result = a.transferAmountToAccount(amountToTransfer, b);
 
@@ -43,10 +43,10 @@ public class AccountTest {
 
     @Test
     public void testExactAvailableFundsTransfer() {
-        float accountBBalance = b.getBalance();
-        float amountToTransfer = a.getBalance();
-        float expectedAmountInAccountA = a.getBalance() - amountToTransfer;
-        float expectedAmountInAccountB = accountBBalance + amountToTransfer;
+        double accountBBalance = b.getBalance();
+        double amountToTransfer = a.getBalance();
+        double expectedAmountInAccountA = a.getBalance() - amountToTransfer;
+        double expectedAmountInAccountB = accountBBalance + amountToTransfer;
         boolean result = a.transferAmountToAccount(amountToTransfer, b);
 
         assertTrue("The transfer from account A to account B should have succeeded because it was the exact amount of available funds..", result);
@@ -57,11 +57,11 @@ public class AccountTest {
 
     @Test
     public void testCorrectTransactions() {
-        float accountABalance = a.getBalance();
-        float accountBBalance = b.getBalance();
-        float amountToTransfer = 43;
-        float expectedAmountInAccountA = accountABalance - amountToTransfer;
-        float expectedAmountInAccountB = accountBBalance + amountToTransfer;
+        double accountABalance = a.getBalance();
+        double accountBBalance = b.getBalance();
+        double amountToTransfer = 43;
+        double expectedAmountInAccountA = accountABalance - amountToTransfer;
+        double expectedAmountInAccountB = accountBBalance + amountToTransfer;
         boolean result = a.transferAmountToAccount(amountToTransfer, b);
         Transaction depositTransactionFromA = a.getTransactions().get(0);
         Transaction transactionFromA = a.getTransactions().get(1);
@@ -97,8 +97,8 @@ public class AccountTest {
     @Test
     public void getAccountNumber() {
         long AccountNumberA = a.getAccountNumber();
-        if (AccountNumberA == 0L) {
-            fail("The random initializer did not work.");
+        if (AccountNumberA <= 0L) {
+            fail("The random initializer did not work. " + a.getAccountNumber());
         }
     }
 

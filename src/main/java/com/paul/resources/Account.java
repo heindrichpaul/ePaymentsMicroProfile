@@ -6,18 +6,20 @@ import java.util.Random;
 
 public class Account {
 
-    private final long accountNumber = new Random().nextLong();
+    private final long accountNumber;
 
     private final Person person;
     private final ArrayList<Transaction> transactions = new ArrayList<>();
-    private float balance;
+    private double balance;
 
-    public Account() {
+    Account() {
         this.person = new Person();
+        accountNumber = generateAccountNumber();
     }
 
-    public Account(String name, String lastname, float amount) {
+    public Account(String name, String lastname, double amount) {
         this.person = new Person(name, lastname);
+        accountNumber = generateAccountNumber();
         this.depositAmount(amount);
     }
 
@@ -26,12 +28,12 @@ public class Account {
         return String.format("The account of " + this.person + " has a balance of %.02f", balance);
     }
 
-    private void depositAmount(float amount) {
+    private void depositAmount(double amount) {
         this.balance += amount;
         this.addCreditTransaction(amount);
     }
 
-    private boolean withdrawAmount(float amount) {
+    private boolean withdrawAmount(double amount) {
         if (this.balance >= amount) {
             this.balance -= amount;
             this.addDebitTransaction(amount);
@@ -41,17 +43,17 @@ public class Account {
         }
     }
 
-    private void addCreditTransaction(float amount) {
+    private void addCreditTransaction(double amount) {
         Transaction transaction = new Transaction(amount, "C");
         this.transactions.add(transaction);
     }
 
-    private void addDebitTransaction(float amount) {
+    private void addDebitTransaction(double amount) {
         Transaction transaction = new Transaction(amount, "D");
         this.transactions.add(transaction);
     }
 
-    public boolean transferAmountToAccount(float amount, Account otherAccount) {
+    public synchronized boolean transferAmountToAccount(double amount, Account otherAccount) {
         if (this.withdrawAmount(amount)) {
             otherAccount.depositAmount(amount);
             return true;
@@ -68,11 +70,15 @@ public class Account {
         return person;
     }
 
-    public float getBalance() {
+    public double getBalance() {
         return balance;
     }
 
     public ArrayList<Transaction> getTransactions() {
         return transactions;
+    }
+
+    private long generateAccountNumber() {
+        return Math.abs(new Random().nextLong());
     }
 }
