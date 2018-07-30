@@ -52,6 +52,7 @@ public class AccountEndpointTest {
         JsonObject account = (JsonObject) obj.getJsonArray("accounts").get(0);
         long accountNumber = account.getJsonNumber("accountNumber").longValueExact();
 
+
         assertEquals("Account list does not have only one account in it.", 1, obj.getJsonArray("accounts").size());
         assertEquals("Account owner's name is different from expected.", name + " " + lastname, account.getString("ownerName"));
         assertEquals("Account balance is different from expected.", amount, account.getJsonNumber("balance").doubleValue(), 0);
