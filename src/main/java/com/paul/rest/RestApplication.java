@@ -9,8 +9,4 @@ import java.util.HashMap;
 @ApplicationPath("ePayments")
 public class RestApplication extends Application {
     static final HashMap<Long, Account> accounts = new HashMap<>();
-
-    public static HashMap<Long, Account> getAccounts() {
-        return accounts;
-    }
 }

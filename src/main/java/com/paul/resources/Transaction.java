@@ -11,7 +11,7 @@ public class Transaction {
     private final LocalDateTime transactionDate;
 
     @JsonbCreator
-    Transaction(@JsonbProperty("transactionAmount") double amount,@JsonbProperty("transactionType") String transactionType) {
+    Transaction(@JsonbProperty("transactionAmount") double amount, @JsonbProperty("transactionType") String transactionType) {
         this.amount = amount;
         this.transactionType = transactionType;
         this.transactionDate = LocalDateTime.now();

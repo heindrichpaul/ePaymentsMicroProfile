@@ -14,13 +14,9 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import java.util.Random;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class AccountEndpointTest {
-
-    private final String border = "======================================";
 
     @Test
     public void testGetAccounts() {
@@ -39,7 +35,7 @@ public class AccountEndpointTest {
         assertEquals("Incorrect response code from " + url, Response.Status.OK.getStatusCode(), response.getStatus());
 
         JsonObject obj = response.readEntity(JsonObject.class);
-        assertTrue("Account list is not empty",obj.getJsonArray("accounts").isEmpty());
+        assertTrue("Account list is not empty", obj.getJsonArray("accounts").isEmpty());
 
         printCaption("Testing account creation");
         //Create account
@@ -47,53 +43,54 @@ public class AccountEndpointTest {
         String name = "John";
         String lastname = "Doe";
         double amount = 10000.0;
-        obj = objBuilder.add("name",name).add("lastname",lastname).add("amount",amount).build();
+        obj = objBuilder.add("name", name).add("lastname", lastname).add("amount", amount).build();
         response = target.request().put(Entity.json(obj));
 
-        assertEquals("Status code for creation of account does not match expected.",Response.Status.CREATED.getStatusCode(),response.getStatus());
+        assertEquals("Status code for creation of account does not match expected.", Response.Status.CREATED.getStatusCode(), response.getStatus());
         response = target.request().get();
         obj = response.readEntity(JsonObject.class);
         JsonObject account = (JsonObject) obj.getJsonArray("accounts").get(0);
         long accountNumber = account.getJsonNumber("accountNumber").longValueExact();
 
-        assertEquals("Account list does not have only one account in it.",1,obj.getJsonArray("accounts").size());
-        assertEquals("Account owner's name is different from expected.",name+" "+lastname,account.getString("ownerName"));
-        assertEquals("Account balance is different from expected.",amount,account.getJsonNumber("balance").doubleValue(),0);
-        assertTrue("Account number is not a positive number.",accountNumber > 0L);
+        assertEquals("Account list does not have only one account in it.", 1, obj.getJsonArray("accounts").size());
+        assertEquals("Account owner's name is different from expected.", name + " " + lastname, account.getString("ownerName"));
+        assertEquals("Account balance is different from expected.", amount, account.getJsonNumber("balance").doubleValue(), 0);
+        assertTrue("Account number is not a positive number.", accountNumber > 0L);
 
         printCaption("Testing empty creation call");
         //Test empty creation put
         obj = objBuilder.build();
         response = target.request().put(Entity.json(obj));
-        assertEquals("Status code for rejection for creation of account does not match expected.",Response.Status.PARTIAL_CONTENT.getStatusCode(),response.getStatus());
+        assertEquals("Status code for rejection for creation of account does not match expected.", Response.Status.PARTIAL_CONTENT.getStatusCode(), response.getStatus());
 
         printCaption("Testing FAKE account lookup");
         //test fake account lookup
         Long fakeAccountNumber = Math.abs(new Random().nextLong());
-        WebTarget nonExistentAccountTarget = client.target(url + "ePayments/accounts/"+fakeAccountNumber);
+        WebTarget nonExistentAccountTarget = client.target(url + "ePayments/accounts/" + fakeAccountNumber);
         response = nonExistentAccountTarget.request().get();
-        assertEquals("Status code for look up of non existent account does not match expected.",Response.Status.NOT_FOUND.getStatusCode(),response.getStatus());
+        assertEquals("Status code for look up of non existent account does not match expected.", Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
 
         printCaption("Testing valid account lookup");
         //test real account lookup
-        WebTarget specificTarget = client.target(url + "ePayments/accounts/"+accountNumber);
+        WebTarget specificTarget = client.target(url + "ePayments/accounts/" + accountNumber);
         response = specificTarget.request().get();
         obj = response.readEntity(JsonObject.class);
-        assertEquals("Status code for look up of non existent account does not match expected.",Response.Status.OK.getStatusCode(),response.getStatus());
-        assertEquals("Account number does not match expected.",accountNumber,obj.getJsonNumber("accountNumber").longValueExact());
-        assertEquals("Account owner's name is different from expected.",name+" "+lastname,account.getString("ownerName"));
-        assertEquals("Account balance is different from expected.",amount,account.getJsonNumber("balance").doubleValue(),0);
+        assertEquals("Status code for look up of non existent account does not match expected.", Response.Status.OK.getStatusCode(), response.getStatus());
+        assertEquals("Account number does not match expected.", accountNumber, obj.getJsonNumber("accountNumber").longValueExact());
+        assertEquals("Account owner's name is different from expected.", name + " " + lastname, account.getString("ownerName"));
+        assertEquals("Account balance is different from expected.", amount, account.getJsonNumber("balance").doubleValue(), 0);
         JsonArray transactions = obj.getJsonArray("transactions");
-        assertFalse("Account transactions are empty",transactions.isEmpty());
+        assertFalse("Account transactions are empty", transactions.isEmpty());
         obj = (JsonObject) transactions.get(0);
-        assertEquals("The transaction amount does not match the initial deposit.",amount,obj.getJsonNumber("transactionAmount").doubleValue(),0);
-        assertEquals("The transaction type does not match expected","C",obj.getString("transactionType"));
+        assertEquals("The transaction amount does not match the initial deposit.", amount, obj.getJsonNumber("transactionAmount").doubleValue(), 0);
+        assertEquals("The transaction type does not match expected", "C", obj.getString("transactionType"));
 
 
         response.close();
     }
 
-    private void printCaption(String caption){
+    private void printCaption(String caption) {
+        String border = "======================================";
         System.out.println(border);
         System.out.println(caption);
         System.out.println(border);

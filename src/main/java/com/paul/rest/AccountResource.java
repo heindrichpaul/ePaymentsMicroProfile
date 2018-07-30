@@ -27,7 +27,7 @@ public class AccountResource {
                 )
         );
 
-        return objBuilder.add("accounts",arrayBuilder.build()).build();
+        return objBuilder.add("accounts", arrayBuilder.build()).build();
 
     }
 
