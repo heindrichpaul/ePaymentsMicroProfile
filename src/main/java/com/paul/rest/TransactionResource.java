@@ -10,7 +10,7 @@ import javax.ws.rs.core.Response;
 
 import static com.paul.rest.RestApplication.accounts;
 
-@Path("transfer")
+@Path("accounts/transfer")
 public class TransactionResource {
 
     @POST
